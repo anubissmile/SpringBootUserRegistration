@@ -18,7 +18,7 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<?> hello() {
-        return ResponseEntity.ok(new UserEntity());
+        return ResponseEntity.ok(new CreateUserRequestModel());
     }
 
     @PostMapping()

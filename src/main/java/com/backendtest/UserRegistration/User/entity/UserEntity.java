@@ -98,7 +98,7 @@ public class UserEntity implements UserDetails {
         user.setUsername(model.getUsername());
         user.setTelephone(model.getTelephone());
         user.setAddress(model.getAddress());
-        user.setMemberType(model.getMemberType());
+        user.setSalary(model.getSalary());
         return user;
     }
 }

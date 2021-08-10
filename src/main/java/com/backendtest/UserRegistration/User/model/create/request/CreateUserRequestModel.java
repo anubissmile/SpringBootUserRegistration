@@ -12,6 +12,8 @@ public class CreateUserRequestModel {
 
     private String address;
 
-    private MemberTypeEnum memberType;
+    private Double salary;
+
+    private String password;
 
 }
