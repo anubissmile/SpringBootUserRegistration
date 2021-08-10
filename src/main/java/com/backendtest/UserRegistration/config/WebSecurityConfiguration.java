@@ -1,14 +1,20 @@
 package com.backendtest.UserRegistration.config;
 
+import com.backendtest.UserRegistration.User.service.MyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
@@ -16,6 +22,22 @@ import java.util.Arrays;
 @EnableWebSecurity
 @Configuration
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private MyUserDetailService myUserDetailService;
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        super.configure(auth);
+        auth.userDetailsService(myUserDetailService);
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("configure");
@@ -27,11 +49,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .authorizeRequests()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .antMatchers("/").permitAll()
-                    .anyRequest().permitAll();
+                    .antMatchers("/authenticate").permitAll()
+                    .anyRequest().authenticated();
         }catch(Exception e){
             e.printStackTrace();
         }
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() { return NoOpPasswordEncoder.getInstance(); }
 
     CorsConfiguration corsConfiguration() {
         CorsConfiguration corsConfiguration  = new CorsConfiguration();
