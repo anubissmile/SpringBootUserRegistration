@@ -9,11 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.CredentialException;
 
@@ -35,5 +33,11 @@ public class AuthenticationController {
         final UserDetails userDetails = userDetailService.loadUserByUsername(request.getUsername());
         final String jwt = jwtTokenUtils.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponseModel(jwt));
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        SecurityContextHolder.getContext().setAuthentication(null);
+        return ResponseEntity.ok("Log out success");
     }
 }

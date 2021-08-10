@@ -30,11 +30,12 @@ public class JWTRequestFilter extends OncePerRequestFilter {
         return request.getRequestURI().endsWith("/authenticate");
     }
 
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println(request.getRequestURL().toString());
-        System.out.print(request.getRequestURI());
         final String authorizationHeader = request.getHeader("Authorization");
+        final Boolean isLogout = request.getRequestURI().endsWith("/logout");
 
         String username = "";
         String jwt = "";

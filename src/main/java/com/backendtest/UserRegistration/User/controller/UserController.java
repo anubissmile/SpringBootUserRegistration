@@ -18,9 +18,6 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<?> hello() {
-        String hash = BCrypt.hashpw("THIS IS PASSWORD", BCrypt.gensalt(12));
-        System.out.println("Say hello" + hash);
-        String res = String.format("Hey friends", " : ", hash);
-        return ResponseEntity.ok(res.toString());
+        return ResponseEntity.ok("Say hello");
     }
 }
