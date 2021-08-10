@@ -1,16 +1,21 @@
 package com.backendtest.UserRegistration.User.entity;
 
 import com.backendtest.UserRegistration.User.enumerate.MemberTypeEnum;
+import com.backendtest.UserRegistration.User.model.create.request.CreateUserRequestModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @Entity
@@ -32,6 +37,10 @@ public class UserEntity implements UserDetails {
     @JsonProperty(value = "registrationCode")
     private String registrationCode;
 
+    @Column(name = "salary")
+    @JsonProperty(value = "salary")
+    private Double salary;
+
     @JsonIgnore
     @Column(name = "password")
     private String password;
@@ -48,6 +57,16 @@ public class UserEntity implements UserDetails {
     @Column(name = "member_type")
     @JsonProperty(value = "memberType")
     private MemberTypeEnum memberType = MemberTypeEnum.SILVER;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    @Column(name = "update_at")
+    private Date updateAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,5 +91,14 @@ public class UserEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public static UserEntity toModel(CreateUserRequestModel model) {
+        UserEntity user = new UserEntity();
+        user.setUsername(model.getUsername());
+        user.setTelephone(model.getTelephone());
+        user.setAddress(model.getAddress());
+        user.setMemberType(model.getMemberType());
+        return user;
     }
 }

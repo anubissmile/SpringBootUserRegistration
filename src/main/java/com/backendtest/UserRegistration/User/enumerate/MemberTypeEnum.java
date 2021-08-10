@@ -7,7 +7,8 @@ import lombok.Setter;
 public enum MemberTypeEnum {
     PLATINUM("Platinum"),
     GOLD("Gold"),
-    SILVER("Silver");
+    SILVER("Silver"),
+    ADMIN("ADMIN");
 
     private String code;
 

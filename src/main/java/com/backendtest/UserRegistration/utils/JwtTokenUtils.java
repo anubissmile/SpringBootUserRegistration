@@ -27,7 +27,8 @@ public class JwtTokenUtils {
                     .setClaims(claims)
                     .setSubject(subject)
                     .setIssuedAt(new Date(System.currentTimeMillis()))
-                    .setExpiration(new Date(System.currentTimeMillis() * 1000 * 60 * 60 * 10))
+                    //Expire in 5 min. (1000 * 60) = 1Min
+                    .setExpiration(new Date(System.currentTimeMillis() * 1000 * 60 * 5))
                     .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact();
     }
 

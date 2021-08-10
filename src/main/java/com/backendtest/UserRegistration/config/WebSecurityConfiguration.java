@@ -53,7 +53,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(request -> new CorsConfiguration(corsConfiguration()));
 
         try {
-            http.authorizeRequests().antMatchers("/authenticate").permitAll()
+            http.authorizeRequests()
+                    .antMatchers("/authenticate").permitAll()
                     .anyRequest().authenticated()
                     .and().sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
